@@ -1,0 +1,134 @@
+:root {
+  /* Color Palette - Light SaaS Environment */
+  --primary: #5420C9;
+  --primary-hover: #4517ac;
+  --secondary: #7C4DFF;
+  --secondary-hover: #6735ee;
+  --light-purple: #F1EBFF;
+  --light-purple-hover: #E7DCFF;
+  --light-purple-subtle: #F8F5FF;
+
+  --bg-main: #FAF9FD;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FAFAFE;
+  --bg-input: #FFFFFF;
+  --bg-muted: #F2EEFB;
+
+  --text-primary: #17152B;
+  --text-secondary: #77748B;
+  --text-muted: #9C98B3;
+  --text-inverse: #FFFFFF;
+
+  --border-color: #E8E2F3;
+  --border-light: #F0EBF8;
+  --border-focus: #7C4DFF;
+
+  --success: #10B981;
+  --success-bg: #ECFDF5;
+  --success-border: #A7F3D0;
+
+  --warning: #F59E0B;
+  --warning-bg: #FFFBEB;
+  --warning-border: #FDE68A;
+
+  --error: #EF4444;
+  --error-bg: #FEF2F2;
+  --error-border: #FECACA;
+
+  --info: #3B82F6;
+  --info-bg: #EFF6FF;
+  --info-border: #BFDBFE;
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(84, 32, 201, 0.04);
+  --shadow-sm: 0 2px 4px rgba(84, 32, 201, 0.06);
+  --shadow-md: 0 4px 12px rgba(84, 32, 201, 0.08);
+  --shadow-lg: 0 10px 25px rgba(84, 32, 201, 0.10);
+  --shadow-xl: 0 20px 40px rgba(84, 32, 201, 0.12);
+
+  /* Border Radius */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Layout dimensions */
+  --nav-height: 68px;
+  --sidebar-width: 260px;
+  --sidebar-collapsed-width: 72px;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #5420C9 0%, #7C4DFF 100%);
+  --gradient-subtle: linear-gradient(135deg, #F1EBFF 0%, #FAF9FD 100%);
+  --gradient-glow: radial-gradient(circle at 50% 0%, rgba(124, 77, 255, 0.15), transparent 70%);
+}
+
+/* Dark Theme (applied via data-theme="dark" on body/root) */
+[data-theme="dark"] {
+  --primary: #7C4DFF;
+  --primary-hover: #9268FF;
+  --secondary: #9E75FF;
+  --secondary-hover: #B593FF;
+  --light-purple: #231C3D;
+  --light-purple-hover: #2D2350;
+  --light-purple-subtle: #1C1733;
+
+  --bg-main: #0E0C18;
+  --bg-card: #161324;
+  --bg-card-hover: #1D1930;
+  --bg-input: #12101F;
+  --bg-muted: #1B172E;
+
+  --text-primary: #F3F1FD;
+  --text-secondary: #9F9BB7;
+  --text-muted: #726E88;
+  --text-inverse: #0E0C18;
+
+  --border-color: #27223F;
+  --border-light: #201C34;
+  --border-focus: #9E75FF;
+
+  --success-bg: #064E3B;
+  --warning-bg: #78350F;
+  --error-bg: #7F1D1D;
+  --info-bg: #1E3A8A;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.7);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+/* IDE / Debugging Workspace Tokens (Always Dark Charcoal with Purple Accents) */
+.ide-theme {
+  --ide-bg: #12111E;
+  --ide-sidebar: #161526;
+  --ide-panel: #1A182C;
+  --ide-panel-subtle: #141324;
+  --ide-panel-header: #1E1C33;
+  --ide-editor-bg: #151424;
+  --ide-terminal-bg: #0E0D18;
+  --ide-border: #2C2847;
+  --ide-border-light: #211E36;
+  --ide-text-primary: #ECE9F8;
+  --ide-text-secondary: #9B96B5;
+  --ide-text-muted: #6B6785;
+  --ide-accent: #7C4DFF;
+  --ide-accent-glow: rgba(124, 77, 255, 0.25);
+  --ide-tab-active: #151424;
+  --ide-tab-inactive: #1A182C;
+  --ide-line-numbers: #4B466A;
+}
+

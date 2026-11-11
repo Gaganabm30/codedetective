@@ -1,0 +1,22 @@
+{
+  "name": "codedetective",
+  "version": "1.0.0",
+  "description": "CodeDetective — AI-Powered Interactive Debugging & Developer Learning Platform",
+  "private": true,
+  "scripts": {
+    "client": "npm --prefix client run dev",
+    "server": "npm --prefix server run dev",
+    "dev": "node -e \"console.log('Use npm run client or npm run server')\"",
+    "build:client": "npm --prefix client run build"
+  },
+  "keywords": [
+    "debugging",
+    "education",
+    "full-stack",
+    "ai-mentor",
+    "developer-tools"
+  ],
+  "author": "CodeDetective Team",
+  "license": "MIT"
+}
+

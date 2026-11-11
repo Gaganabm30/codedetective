@@ -1,0 +1,27 @@
+.dashboard-layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-main);
+}
+
+.dashboard-body {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.dashboard-content-area {
+  flex: 1;
+  min-width: 0;
+  padding: 2rem;
+  background-color: var(--bg-main);
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .dashboard-content-area {
+    padding: 1.25rem 1rem;
+  }
+}
+
