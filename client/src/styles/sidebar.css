@@ -1,30 +1,38 @@
+/* ============================================================
+   SIDEBAR — Brutalist Design System
+   Sharp edges · Hard offset shadows · Purple active states
+   ============================================================ */
+
 .app-sidebar {
   width: var(--sidebar-width);
   background-color: var(--bg-card);
-  border-right: 1px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
   display: flex;
   flex-direction: column;
   height: calc(100vh - var(--nav-height));
   position: sticky;
   top: var(--nav-height);
   flex-shrink: 0;
-  transition: all var(--transition-fast);
 }
 
+/* ── User Card ─────────────────────────────────────────────── */
 .sidebar-user-card {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.25rem 1.25rem 1rem 1.25rem;
-  border-bottom: 1px solid var(--border-light);
+  padding: 1.1rem 1rem;
+  border-bottom: 2px solid var(--border-color);
+  background-color: var(--pale-lavender);
 }
 
 .sidebar-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
+  width: 38px;
+  height: 38px;
+  border-radius: 0;
   object-fit: cover;
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
+  box-shadow: 2px 2px 0 var(--border-color);
+  flex-shrink: 0;
 }
 
 .sidebar-user-info {
@@ -35,111 +43,151 @@
 }
 
 .user-name {
-  font-size: 0.88rem;
-  font-weight: 700;
+  font-size: 0.84rem;
+  font-weight: 800;
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -0.01em;
 }
 
 .user-role {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .user-xp-badge {
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  background-color: var(--light-purple);
-  color: var(--primary);
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-pill);
-  font-size: 0.75rem;
-  font-weight: 700;
+  background-color: var(--primary);
+  color: #FFFFFF;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0;
+  border: 1.5px solid var(--border-color);
+  box-shadow: 2px 2px 0 var(--border-color);
+  font-size: 0.7rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
+/* ── Scroll Area ───────────────────────────────────────────── */
 .sidebar-scroll-area {
   flex: 1;
   overflow-y: auto;
   padding: 1rem 0.75rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.1rem;
 }
 
+.sidebar-scroll-area::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll-area::-webkit-scrollbar-track {
+  background: var(--pale-lavender);
+}
+.sidebar-scroll-area::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+}
+
+/* ── Nav Group Title ───────────────────────────────────────── */
 .nav-group-title {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
-  padding: 0 0.65rem 0.45rem 0.65rem;
+  padding: 0 0.5rem 0.35rem 0.5rem;
   text-transform: uppercase;
+  font-family: var(--font-mono);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 0.25rem;
 }
 
 .nav-list {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
+/* ── Sidebar Links ─────────────────────────────────────────── */
 .sidebar-link {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.55rem 0.75rem;
-  border-radius: var(--radius-md);
+  gap: 0.6rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 0;
   color: var(--text-secondary);
-  font-size: 0.86rem;
-  font-weight: 500;
+  font-size: 0.84rem;
+  font-weight: 600;
   text-decoration: none;
-  transition: all var(--transition-fast);
+  transition: background-color 0.1s, color 0.1s, box-shadow 0.1s, transform 0.1s;
+  border: 1.5px solid transparent;
+  position: relative;
 }
 
 .sidebar-link:hover {
   color: var(--primary);
-  background-color: var(--light-purple-subtle);
-  transform: translateX(2px);
+  background-color: var(--light-purple);
+  border-color: var(--border-color);
+  box-shadow: 2px 2px 0 var(--border-color);
+  transform: translate(-1px, -1px);
 }
 
 .sidebar-link.active {
-  color: var(--primary);
-  background-color: var(--light-purple);
-  font-weight: 600;
-  box-shadow: inset 3px 0 0 var(--primary);
+  color: #FFFFFF;
+  background-color: var(--primary);
+  border: 1.5px solid var(--border-color);
+  box-shadow: 3px 3px 0 var(--border-color);
+  font-weight: 700;
+}
+
+.sidebar-link.active .nav-icon {
+  color: #FFFFFF;
 }
 
 .nav-icon {
   flex-shrink: 0;
-  transition: transform var(--transition-fast);
 }
 
-.sidebar-link:hover .nav-icon {
-  transform: scale(1.1);
-}
-
+/* ── Pill Badge ────────────────────────────────────────────── */
 .pill-hot {
   margin-left: auto;
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 800;
-  background: var(--gradient-primary);
+  background: var(--primary);
   color: #FFFFFF;
-  padding: 0.15rem 0.4rem;
-  border-radius: var(--radius-pill);
-  letter-spacing: 0.04em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0;
+  border: 1px solid var(--border-color);
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
 }
 
+.sidebar-link.active .pill-hot {
+  background: #FFFFFF;
+  color: var(--primary);
+  border-color: rgba(255,255,255,0.4);
+}
+
+/* ── Sidebar Footer ────────────────────────────────────────── */
 .sidebar-footer {
-  padding: 1rem;
-  border-top: 1px solid var(--border-light);
+  padding: 0.85rem;
+  border-top: 2px solid var(--border-color);
 }
 
 .debug-tip-card {
-  background: var(--light-purple-subtle);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+  background: var(--pale-lavender);
+  border: 1.5px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: 3px 3px 0 var(--border-color);
   padding: 0.75rem;
 }
 
@@ -147,10 +195,13 @@
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 800;
   color: var(--primary);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .tip-icon {
@@ -160,12 +211,12 @@
 .tip-text {
   font-size: 0.72rem;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
+/* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .app-sidebar {
     display: none;
   }
 }
-

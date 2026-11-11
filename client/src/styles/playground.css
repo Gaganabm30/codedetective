@@ -9,11 +9,13 @@
   font-family: var(--font-sans);
 }
 
-/* Workspace Top Toolbar */
+/* ==========================================================
+   WORKSPACE TOP TOOLBAR
+   ========================================================== */
 .workspace-toolbar {
   height: 52px;
   background-color: var(--ide-sidebar);
-  border-bottom: 1px solid var(--ide-border);
+  border-bottom: 2px solid var(--ide-border-dark);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -31,19 +33,19 @@
 .btn-back {
   width: 32px;
   height: 32px;
-  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ide-text-secondary);
+  color: #FFFFFF;
   background-color: var(--ide-panel);
-  font-weight: 700;
+  border: 1px solid var(--ide-border);
+  font-weight: 800;
   transition: all var(--transition-fast);
 }
 
 .btn-back:hover {
-  color: #FFFFFF;
   background-color: var(--primary);
+  border-color: #000000;
 }
 
 .project-badge-wrap {
@@ -54,8 +56,8 @@
 
 .project-title {
   font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--ide-text-primary);
+  font-weight: 800;
+  color: #FFFFFF;
   letter-spacing: -0.01em;
 }
 
@@ -66,37 +68,59 @@
 }
 
 .xp-pill-mini {
+  font-family: var(--font-mono);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #A78BFA;
-  background-color: rgba(124, 77, 255, 0.15);
+  background-color: rgba(124, 77, 255, 0.2);
+  border: 1px solid #702BEF;
   padding: 0.15rem 0.45rem;
-  border-radius: var(--radius-pill);
 }
 
 .toolbar-right {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .toolbar-btn {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   padding: 0.35rem 0.85rem;
+  box-shadow: 2px 2px 0 #000000;
 }
 
-/* 3-Column IDE Workspace Body */
+.toolbar-btn.btn-primary {
+  background-color: var(--primary);
+  border: 1.5px solid #000000;
+  color: #FFFFFF;
+}
+
+.toolbar-btn.btn-secondary {
+  background-color: #2D2745;
+  color: #FFFFFF;
+  border: 1.5px solid #000000;
+}
+
+.toolbar-btn.btn-outline {
+  background-color: var(--ide-panel);
+  color: #E2DEF0;
+  border: 1.5px solid #000000;
+}
+
+/* ==========================================================
+   WORKSPACE 3-COLUMN BODY
+   ========================================================== */
 .workspace-body {
   display: grid;
-  grid-template-columns: 240px 1fr 360px;
+  grid-template-columns: 240px 1fr 380px;
   height: calc(100vh - 52px);
   overflow: hidden;
 }
 
-/* Left Panel: File Explorer */
+/* LEFT: File Explorer */
 .explorer-panel {
   background-color: var(--ide-sidebar);
-  border-right: 1px solid var(--ide-border);
+  border-right: 2px solid var(--ide-border-dark);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -108,14 +132,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--ide-border-light);
-  font-size: 0.7rem;
-  font-weight: 800;
+  border-bottom: 1px solid var(--ide-border);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 900;
   letter-spacing: 0.08em;
   color: var(--ide-text-muted);
 }
 
 .file-count-badge {
+  font-family: var(--font-mono);
   font-size: 0.65rem;
   color: var(--ide-text-muted);
 }
@@ -131,9 +157,10 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.4rem 0.85rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--ide-text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #C3BFD8;
 }
 
 .folder-icon {
@@ -143,39 +170,41 @@
 .folder-children {
   display: flex;
   flex-direction: column;
-  padding-left: 0.5rem;
 }
 
 .tree-file-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.45rem 0.85rem;
+  padding: 0.45rem 1rem;
   font-size: 0.8rem;
   font-family: var(--font-mono);
   color: var(--ide-text-secondary);
-  border-radius: var(--radius-xs);
+  border-left: 2px solid transparent;
   transition: all var(--transition-fast);
   cursor: pointer;
   text-align: left;
 }
 
 .tree-file-item:hover {
-  color: var(--ide-text-primary);
+  color: #FFFFFF;
   background-color: rgba(255, 255, 255, 0.04);
 }
 
 .tree-file-item.active {
   color: #FFFFFF;
-  background-color: rgba(124, 77, 255, 0.2);
-  border-left: 2px solid var(--ide-accent);
+  background-color: rgba(84, 32, 201, 0.3);
+  border-left-color: var(--ide-accent-light);
+  font-weight: 700;
 }
 
 .file-icon {
   color: #93C5FD;
 }
 
-/* Center Panel: Editor + Bottom Console */
+/* ==========================================================
+   CENTER: Editor + Bottom Console
+   ========================================================== */
 .editor-center-panel {
   display: flex;
   flex-direction: column;
@@ -184,13 +213,13 @@
   background-color: var(--ide-editor-bg);
 }
 
-/* File Tabs Bar */
+/* File Tabs */
 .editor-tabs-bar {
   display: flex;
   align-items: center;
   height: 38px;
   background-color: var(--ide-panel-subtle);
-  border-bottom: 1px solid var(--ide-border);
+  border-bottom: 2px solid var(--ide-border-dark);
   overflow-x: auto;
 }
 
@@ -204,7 +233,7 @@
   font-family: var(--font-mono);
   color: var(--ide-text-secondary);
   background-color: var(--ide-panel-subtle);
-  border-right: 1px solid var(--ide-border-light);
+  border-right: 1px solid var(--ide-border);
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
@@ -212,14 +241,16 @@
 }
 
 .editor-tab:hover {
-  color: var(--ide-text-primary);
-  background-color: rgba(255, 255, 255, 0.03);
+  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.04);
 }
 
+/* Deep Purple Active Tab (as specified in prompt) */
 .editor-tab.active {
   color: #FFFFFF;
-  background-color: var(--ide-editor-bg);
-  border-top: 2px solid var(--ide-accent);
+  background-color: var(--primary);
+  font-weight: 700;
+  border-bottom: 2px solid var(--accent);
 }
 
 .tab-icon {
@@ -232,12 +263,10 @@
   align-items: center;
   margin-left: 0.25rem;
   padding: 0.15rem;
-  border-radius: 2px;
 }
 
 .tab-close-btn:hover {
   color: #EF4444;
-  background-color: rgba(239, 68, 68, 0.15);
 }
 
 .monaco-wrapper {
@@ -250,7 +279,7 @@
 .bottom-panel {
   height: 240px;
   background-color: var(--ide-terminal-bg);
-  border-top: 1px solid var(--ide-border);
+  border-top: 2px solid var(--ide-border-dark);
   display: flex;
   flex-direction: column;
   transition: height var(--transition-fast);
@@ -282,35 +311,35 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.35rem 0.65rem;
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
   color: var(--ide-text-secondary);
-  border-radius: var(--radius-xs);
+  border: 1px solid transparent;
   transition: all var(--transition-fast);
 }
 
 .bottom-tab:hover {
-  color: var(--ide-text-primary);
+  color: #FFFFFF;
 }
 
 .bottom-tab.active {
   color: #FFFFFF;
-  background-color: rgba(124, 77, 255, 0.2);
+  background-color: var(--primary);
+  border-color: #000000;
 }
 
 .pill-status-dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
 }
 .pill-status-dot.green { background-color: #10B981; }
 .pill-status-dot.red { background-color: #EF4444; }
 
 .badge-count {
   font-size: 0.65rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.15);
   padding: 0.1rem 0.35rem;
-  border-radius: var(--radius-pill);
 }
 
 .bottom-actions {
@@ -321,11 +350,10 @@
 .bottom-toggle-btn {
   color: var(--ide-text-muted);
   padding: 0.2rem;
-  border-radius: var(--radius-xs);
 }
 
 .bottom-toggle-btn:hover {
-  color: var(--ide-text-primary);
+  color: #FFFFFF;
 }
 
 .bottom-panel-content {
@@ -334,6 +362,7 @@
   padding: 0.85rem;
   font-family: var(--font-mono);
   font-size: 0.82rem;
+  background-color: #0A0912;
 }
 
 /* Terminal Lines */
@@ -356,7 +385,7 @@
 
 .terminal-line.info .log-body { color: #A5B4FC; }
 .terminal-line.warn .log-body { color: #FCD34D; }
-.terminal-line.error .log-body { color: #FCA5A5; font-weight: 600; }
+.terminal-line.error .log-body { color: #FCA5A5; font-weight: 700; }
 
 /* Test Results Drawer View */
 .test-results-view {
@@ -371,10 +400,12 @@
   padding-bottom: 0.65rem;
   border-bottom: 1px solid var(--ide-border);
   margin-bottom: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
 }
 
-.summary-status.pass { color: #34D399; font-weight: 700; }
-.summary-status.fail { color: #F87171; font-weight: 700; }
+.summary-status.pass { color: #34D399; font-weight: 800; }
+.summary-status.fail { color: #F87171; font-weight: 800; }
 
 .summary-counts {
   color: var(--ide-text-secondary);
@@ -383,13 +414,12 @@
 .test-items-list {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .test-item-card {
   background-color: var(--ide-panel);
-  border: 1px solid var(--ide-border-light);
-  border-radius: var(--radius-sm);
+  border: 1px solid var(--ide-border);
   padding: 0.65rem 0.85rem;
   display: flex;
   flex-direction: column;
@@ -411,30 +441,32 @@
 }
 
 .test-status-pill {
+  font-family: var(--font-mono);
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 900;
   padding: 0.15rem 0.4rem;
-  border-radius: var(--radius-xs);
+  border: 1px solid #000000;
 }
 
 .test-item-card.passed .test-status-pill {
-  background-color: rgba(16, 185, 129, 0.2);
-  color: #34D399;
+  background-color: #10B981;
+  color: #000000;
 }
 
 .test-item-card.failed .test-status-pill {
-  background-color: rgba(239, 68, 68, 0.2);
-  color: #F87171;
+  background-color: #EF4444;
+  color: #FFFFFF;
 }
 
 .test-title {
   font-size: 0.82rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--ide-text-primary);
   flex: 1;
 }
 
 .test-time {
+  font-family: var(--font-mono);
   font-size: 0.72rem;
   color: var(--ide-text-muted);
 }
@@ -442,16 +474,15 @@
 .test-desc {
   font-size: 0.75rem;
   color: var(--ide-text-secondary);
-  font-family: var(--font-sans);
 }
 
 .test-error-box {
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid #EF4444;
   padding: 0.4rem 0.6rem;
-  border-radius: var(--radius-xs);
   color: #FCA5A5;
   font-size: 0.75rem;
+  font-family: var(--font-mono);
 }
 
 .test-empty-state {
@@ -462,12 +493,15 @@
   gap: 0.75rem;
   padding: 2rem;
   color: var(--ide-text-muted);
+  font-family: var(--font-mono);
 }
 
-/* Right Panel: Instructions & AI Mentor */
+/* ==========================================================
+   RIGHT: Details & AI Mentor
+   ========================================================== */
 .instructions-panel {
   background-color: var(--ide-panel);
-  border-left: 1px solid var(--ide-border);
+  border-left: 2px solid var(--ide-border-dark);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -477,7 +511,7 @@
   display: flex;
   height: 38px;
   background-color: var(--ide-panel-header);
-  border-bottom: 1px solid var(--ide-border);
+  border-bottom: 2px solid var(--ide-border-dark);
 }
 
 .panel-tab {
@@ -486,22 +520,23 @@
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  font-size: 0.78rem;
-  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 800;
   color: var(--ide-text-secondary);
   background: transparent;
-  transition: all var(--transition-fast);
   border-bottom: 2px solid transparent;
+  transition: all var(--transition-fast);
 }
 
 .panel-tab:hover {
-  color: var(--ide-text-primary);
+  color: #FFFFFF;
 }
 
 .panel-tab.active {
   color: #FFFFFF;
-  background-color: var(--ide-panel);
-  border-bottom-color: var(--ide-accent);
+  background-color: var(--primary);
+  border-bottom-color: var(--accent);
 }
 
 .instructions-body {
@@ -510,7 +545,7 @@
   padding: 1rem;
 }
 
-/* Instructions Tab */
+/* Instructions Content */
 .tab-instructions-content {
   display: flex;
   flex-direction: column;
@@ -524,10 +559,11 @@
 }
 
 .section-label {
-  font-size: 0.7rem;
-  font-weight: 800;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 900;
   letter-spacing: 0.08em;
-  color: var(--ide-text-muted);
+  color: #A78BFA;
 }
 
 .problem-desc {
@@ -538,9 +574,8 @@
 
 .instructions-pre {
   background-color: var(--ide-bg);
-  border: 1px solid var(--ide-border-light);
+  border: 1px solid var(--ide-border);
   padding: 0.85rem;
-  border-radius: var(--radius-sm);
   font-family: var(--font-sans);
   font-size: 0.82rem;
   line-height: 1.5;
@@ -552,19 +587,18 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .spec-list li {
   font-size: 0.8rem;
   padding: 0.5rem 0.65rem;
-  border-radius: var(--radius-xs);
   background-color: var(--ide-bg);
-  border: 1px solid var(--ide-border-light);
+  border: 1px solid var(--ide-border);
 }
 
 .spec-list strong {
-  color: var(--ide-text-primary);
+  color: #FFFFFF;
 }
 
 .spec-list p {
@@ -588,12 +622,11 @@
 .hints-accordion {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .hint-card {
-  border: 1px solid var(--ide-border-light);
-  border-radius: var(--radius-md);
+  border: 1.5px solid var(--ide-border);
   padding: 0.85rem;
   background-color: var(--ide-bg);
   display: flex;
@@ -602,33 +635,37 @@
 }
 
 .hint-tier-tag {
+  font-family: var(--font-mono);
   font-size: 0.68rem;
-  font-weight: 800;
-  color: #A78BFA;
-  background-color: rgba(124, 77, 255, 0.15);
+  font-weight: 900;
+  color: #FFFFFF;
+  background-color: var(--primary);
   padding: 0.15rem 0.4rem;
-  border-radius: var(--radius-xs);
+  border: 1px solid #000000;
 }
 
 .hint-title {
   font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--ide-text-primary);
+  font-weight: 800;
+  color: #FFFFFF;
   flex: 1;
   margin-left: 0.4rem;
 }
 
 .unlock-btn {
   font-size: 0.72rem;
-  padding: 0.25rem 0.5rem;
+  padding: 0.2rem 0.5rem;
+  background-color: var(--primary);
+  color: #FFFFFF;
+  border: 1px solid #000000;
 }
 
 .hint-text {
   font-size: 0.8rem;
-  color: var(--ide-text-primary);
+  color: #E2DEF0;
   line-height: 1.5;
-  background-color: rgba(124, 77, 255, 0.08);
-  border-radius: var(--radius-xs);
+  background-color: rgba(124, 77, 255, 0.12);
+  border: 1px solid var(--primary);
   padding: 0.5rem;
 }
 
@@ -667,8 +704,8 @@
 .mentor-avatar-badge {
   width: 26px;
   height: 26px;
-  border-radius: 50%;
-  background: var(--gradient-primary);
+  background-color: var(--primary);
+  border: 1px solid #000000;
   color: white;
   display: flex;
   align-items: center;
@@ -680,25 +717,26 @@
 .message-bubble {
   max-width: 82%;
   padding: 0.65rem 0.85rem;
-  border-radius: var(--radius-md);
   font-size: 0.82rem;
   line-height: 1.45;
 }
 
 .chat-message.mentor .message-bubble {
   background-color: var(--ide-bg);
-  border: 1px solid var(--ide-border-light);
-  color: var(--ide-text-primary);
+  border: 1px solid var(--ide-border);
+  color: #E2DEF0;
 }
 
 .chat-message.user .message-bubble {
   background-color: var(--primary);
   color: white;
+  border: 1px solid #000000;
 }
 
 .typing-dots {
   color: var(--ide-text-muted);
   font-style: italic;
+  font-family: var(--font-mono);
 }
 
 .quick-prompts-bar {
@@ -709,13 +747,13 @@
 }
 
 .quick-chip {
+  font-family: var(--font-mono);
   font-size: 0.72rem;
-  font-weight: 600;
-  color: #A78BFA;
-  background-color: rgba(124, 77, 255, 0.12);
-  border: 1px solid rgba(124, 77, 255, 0.25);
+  font-weight: 700;
+  color: #FFFFFF;
+  background-color: var(--ide-bg);
+  border: 1.5px solid var(--ide-border);
   padding: 0.25rem 0.5rem;
-  border-radius: var(--radius-pill);
   white-space: nowrap;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -723,7 +761,7 @@
 
 .quick-chip:hover {
   background-color: var(--primary);
-  color: white;
+  border-color: #000000;
 }
 
 .mentor-input-form {
@@ -731,25 +769,29 @@
   align-items: center;
   gap: 0.4rem;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--ide-border-light);
+  border-top: 1px solid var(--ide-border);
 }
 
 .mentor-input {
   flex: 1;
   background-color: var(--ide-bg);
-  border: 1px solid var(--ide-border);
-  color: var(--ide-text-primary);
+  border: 1.5px solid var(--ide-border);
+  color: #FFFFFF;
   font-size: 0.82rem;
   padding: 0.5rem 0.75rem;
-  border-radius: var(--radius-md);
+}
+
+.mentor-input:focus {
+  border-color: var(--accent);
+  box-shadow: 2px 2px 0 #000000;
 }
 
 .btn-send-mentor {
   width: 34px;
   height: 34px;
   background-color: var(--primary);
+  border: 1.5px solid #000000;
   color: white;
-  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -776,4 +818,3 @@
     display: none;
   }
 }
-

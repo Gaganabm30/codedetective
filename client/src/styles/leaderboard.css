@@ -1,3 +1,8 @@
+/* ============================================================
+   LEADERBOARD — Brutalist Design System
+   Sharp edges · Hard offset shadows · Monospace rank numbers
+   ============================================================ */
+
 .leaderboard-page {
   display: flex;
   flex-direction: column;
@@ -5,32 +10,38 @@
   padding: 2.5rem 0 4rem 0;
 }
 
-/* Header */
+/* ── Header ────────────────────────────────────────────────── */
 .leaderboard-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2.25rem 2.5rem;
+  padding: 2rem 2.5rem;
   gap: 1.5rem;
   flex-wrap: wrap;
-  background: linear-gradient(135deg, var(--bg-card) 0%, var(--light-purple-subtle) 100%);
+  background-color: var(--pale-lavender);
+  border: 2px solid var(--border-color);
+  box-shadow: 5px 5px 0 var(--border-color);
 }
 
 .lb-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 800;
   color: var(--primary);
   background-color: var(--light-purple);
-  padding: 0.2rem 0.65rem;
-  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-color);
+  border-radius: 0;
+  padding: 0.18rem 0.6rem;
   margin-bottom: 0.5rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .lb-title {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-primary);
@@ -38,96 +49,117 @@
 }
 
 .lb-desc {
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--text-secondary);
-  max-width: 650px;
+  max-width: 600px;
 }
 
+/* ── Timeframe Tabs ────────────────────────────────────────── */
 .timeframe-tabs {
   display: flex;
-  background-color: var(--bg-muted);
-  padding: 0.3rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-color);
-  gap: 0.25rem;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: 3px 3px 0 var(--border-color);
+  gap: 0;
 }
 
 .time-tab {
   padding: 0.45rem 1rem;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: var(--text-secondary);
-  border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
+  border-radius: 0;
+  border: none;
+  border-right: 1px solid var(--border-color);
+  transition: background-color 0.1s, color 0.1s;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  background: transparent;
+}
+
+.time-tab:last-child {
+  border-right: none;
 }
 
 .time-tab:hover {
   color: var(--primary);
+  background-color: var(--light-purple);
 }
 
 .time-tab.active {
-  background-color: var(--bg-card);
-  color: var(--primary);
-  box-shadow: var(--shadow-xs);
+  background-color: var(--primary);
+  color: #FFFFFF;
 }
 
-/* Podium Grid */
+/* ── Podium Grid ───────────────────────────────────────────── */
 .podium-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 1.25rem;
   align-items: flex-end;
 }
 
 .podium-card {
-  padding: 2rem 1.5rem;
+  padding: 1.75rem 1.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.65rem;
+  gap: 0.6rem;
   position: relative;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: 5px 5px 0 var(--border-color);
 }
 
 .podium-card.rank-1 {
   order: 2;
-  border: 2px solid #F59E0B;
-  background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, var(--bg-card) 100%);
+  border: 2.5px solid #F59E0B;
+  box-shadow: 5px 5px 0 #F59E0B;
   transform: translateY(-10px);
 }
 
 .podium-card.rank-2 {
   order: 1;
-  border: 1.5px solid #94A3B8;
+  border: 2px solid #94A3B8;
+  box-shadow: 5px 5px 0 #94A3B8;
 }
 
 .podium-card.rank-3 {
   order: 3;
-  border: 1.5px solid #B45309;
+  border: 2px solid #B45309;
+  box-shadow: 5px 5px 0 #B45309;
 }
 
+/* Square avatar */
 .podium-avatar {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+  width: 68px;
+  height: 68px;
+  border-radius: 0;
   object-fit: cover;
-  border: 3px solid var(--border-color);
+  border: 2.5px solid var(--border-color);
+  box-shadow: 3px 3px 0 var(--border-color);
   margin-bottom: 0.25rem;
 }
 
 .podium-card.rank-1 .podium-avatar {
   border-color: #F59E0B;
+  box-shadow: 3px 3px 0 #F59E0B;
 }
 
 .podium-name {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 .podium-handle {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
+  font-family: var(--font-mono);
 }
 
 .podium-stats {
@@ -136,7 +168,7 @@
   justify-content: space-around;
   width: 100%;
   padding-top: 1rem;
-  border-top: 1px solid var(--border-light);
+  border-top: 1.5px solid var(--border-color);
   margin-top: 0.5rem;
 }
 
@@ -147,22 +179,25 @@
 }
 
 .p-val {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 800;
+  font-family: var(--font-mono);
 }
 
 .p-lbl {
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
 }
 
-.rank-crown.gold { color: #F59E0B; }
+.rank-crown.gold   { color: #F59E0B; }
 .rank-crown.silver { color: #94A3B8; }
 .rank-crown.bronze { color: #B45309; }
 
-/* Table */
+/* ── Table Card ────────────────────────────────────────────── */
 .leaderboard-table-card {
   padding: 1.5rem;
   display: flex;
@@ -174,11 +209,12 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 0;
   padding: 0.5rem 0.85rem;
-  border-radius: var(--radius-md);
   max-width: 400px;
+  box-shadow: 3px 3px 0 var(--border-color);
 }
 
 .table-search-input {
@@ -187,6 +223,8 @@
   width: 100%;
   padding: 0;
   font-size: 0.88rem;
+  outline: none;
+  color: var(--text-primary);
 }
 
 .table-responsive {
@@ -198,35 +236,40 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  border: 2px solid var(--border-color);
 }
 
 .lb-table th {
-  padding: 0.75rem 1rem;
-  font-size: 0.75rem;
+  padding: 0.7rem 1rem;
+  font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--text-muted);
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 2px solid var(--border-color);
+  background-color: var(--pale-lavender);
+  font-family: var(--font-mono);
 }
 
 .lb-table td {
-  padding: 1rem;
-  border-bottom: 1px solid var(--border-light);
-  font-size: 0.88rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.86rem;
 }
 
 .lb-row:hover {
-  background-color: var(--light-purple-subtle);
+  background-color: var(--light-purple);
 }
 
 .current-user-row {
-  background-color: rgba(124, 77, 255, 0.08);
+  background-color: rgba(84, 32, 201, 0.06);
+  border-left: 3px solid var(--primary);
 }
 
 .rank-cell {
-  font-weight: 700;
+  font-weight: 800;
   font-family: var(--font-mono);
+  font-size: 1rem;
 }
 
 .user-info-cell {
@@ -236,10 +279,12 @@
 }
 
 .user-avatar-sm {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  border-radius: 0;
   object-fit: cover;
+  border: 1.5px solid var(--border-color);
+  box-shadow: 2px 2px 0 var(--border-color);
 }
 
 .user-names {
@@ -256,30 +301,36 @@
 }
 
 .you-pill {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 800;
   background-color: var(--primary);
   color: white;
-  padding: 0.1rem 0.4rem;
-  border-radius: var(--radius-pill);
+  padding: 0.08rem 0.35rem;
+  border-radius: 0;
+  border: 1px solid var(--border-color);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
 }
 
 .username-sub {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
+  font-family: var(--font-mono);
 }
 
 .streak-cell {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #B45309;
+  font-family: var(--font-mono);
 }
 
 .accuracy-badge {
-  font-weight: 700;
-  color: #10B981;
+  font-weight: 800;
+  color: var(--success);
+  font-family: var(--font-mono);
 }
 
 .xp-highlight {
@@ -288,9 +339,10 @@
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
+  font-family: var(--font-mono);
 }
 
-/* Responsive */
+/* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .podium-grid {
     grid-template-columns: 1fr;
@@ -302,4 +354,3 @@
   .podium-card.rank-2 { order: 2; }
   .podium-card.rank-3 { order: 3; }
 }
-

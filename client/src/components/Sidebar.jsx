@@ -18,8 +18,7 @@ import {
   User,
   Settings,
   Flame,
-  Zap,
-  HelpCircle
+  Zap
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import '../styles/sidebar.css';
@@ -38,24 +37,25 @@ export default function Sidebar() {
 
   return (
     <aside className="app-sidebar">
-      {/* User Quick Info */}
+      {/* ── User Quick Info ── */}
       {user && (
         <div className="sidebar-user-card">
           <img src={user.avatar} alt={user.name} className="sidebar-avatar" />
           <div className="sidebar-user-info">
             <span className="user-name">{user.name}</span>
-            <span className="user-role">Level {user.level || 4} Detective</span>
+            <span className="user-role">// LVL {user.level || 4} DETECTIVE</span>
           </div>
           <div className="user-xp-badge">
-            <Zap size={12} /> {user.xp}
+            <Zap size={11} />
+            {user.xp} XP
           </div>
         </div>
       )}
 
       <div className="sidebar-scroll-area">
-        {/* MAIN Section */}
+        {/* ── MAIN Section ── */}
         <div className="nav-group">
-          <div className="nav-group-title">MAIN</div>
+          <div className="nav-group-title">// MAIN</div>
           <ul className="nav-list">
             <li>
               <NavLink
@@ -63,7 +63,7 @@ export default function Sidebar() {
                 className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
                 end
               >
-                <LayoutDashboard size={18} className="nav-icon" />
+                <LayoutDashboard size={16} className="nav-icon" />
                 <span>Overview</span>
               </NavLink>
             </li>
@@ -72,7 +72,7 @@ export default function Sidebar() {
                 to="/debug-lab"
                 className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               >
-                <FlaskConical size={18} className="nav-icon" />
+                <FlaskConical size={16} className="nav-icon" />
                 <span>Debug Lab</span>
                 <span className="pill-hot">NEW</span>
               </NavLink>
@@ -84,7 +84,7 @@ export default function Sidebar() {
                   `sidebar-link ${isActive && !location.search ? 'active' : ''}`
                 }
               >
-                <Compass size={18} className="nav-icon" />
+                <Compass size={16} className="nav-icon" />
                 <span>Challenges</span>
               </NavLink>
             </li>
@@ -93,23 +93,23 @@ export default function Sidebar() {
                 to="/playground"
                 className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               >
-                <Terminal size={18} className="nav-icon" />
+                <Terminal size={16} className="nav-icon" />
                 <span>Playground</span>
               </NavLink>
             </li>
           </ul>
         </div>
 
-        {/* LEARNING Section */}
+        {/* ── LEARNING Section ── */}
         <div className="nav-group">
-          <div className="nav-group-title">LEARNING</div>
+          <div className="nav-group-title">// LEARNING</div>
           <ul className="nav-list">
             <li>
               <NavLink
                 to="/challenges?category=Full Stack"
                 className={`sidebar-link ${isCategoryActive('Full Stack') ? 'active' : ''}`}
               >
-                <Layers size={17} className="nav-icon" />
+                <Layers size={15} className="nav-icon" />
                 <span>Full Stack</span>
               </NavLink>
             </li>
@@ -118,7 +118,7 @@ export default function Sidebar() {
                 to="/challenges?category=Frontend"
                 className={`sidebar-link ${isCategoryActive('Frontend') ? 'active' : ''}`}
               >
-                <Globe size={17} className="nav-icon" />
+                <Globe size={15} className="nav-icon" />
                 <span>Frontend</span>
               </NavLink>
             </li>
@@ -127,7 +127,7 @@ export default function Sidebar() {
                 to="/challenges?category=Backend"
                 className={`sidebar-link ${isCategoryActive('Backend') ? 'active' : ''}`}
               >
-                <Server size={17} className="nav-icon" />
+                <Server size={15} className="nav-icon" />
                 <span>Backend</span>
               </NavLink>
             </li>
@@ -136,7 +136,7 @@ export default function Sidebar() {
                 to="/challenges?category=JavaScript"
                 className={`sidebar-link ${isCategoryActive('JavaScript') ? 'active' : ''}`}
               >
-                <FileCode size={17} className="nav-icon" />
+                <FileCode size={15} className="nav-icon" />
                 <span>JavaScript</span>
               </NavLink>
             </li>
@@ -145,7 +145,7 @@ export default function Sidebar() {
                 to="/challenges?category=React"
                 className={`sidebar-link ${isCategoryActive('React') ? 'active' : ''}`}
               >
-                <Atom size={17} className="nav-icon" />
+                <Atom size={15} className="nav-icon" />
                 <span>React</span>
               </NavLink>
             </li>
@@ -154,7 +154,7 @@ export default function Sidebar() {
                 to="/challenges?category=Node.js"
                 className={`sidebar-link ${isCategoryActive('Node.js') ? 'active' : ''}`}
               >
-                <Cpu size={17} className="nav-icon" />
+                <Cpu size={15} className="nav-icon" />
                 <span>Node.js</span>
               </NavLink>
             </li>
@@ -163,7 +163,7 @@ export default function Sidebar() {
                 to="/challenges?category=DSA"
                 className={`sidebar-link ${isCategoryActive('DSA') ? 'active' : ''}`}
               >
-                <Binary size={17} className="nav-icon" />
+                <Binary size={15} className="nav-icon" />
                 <span>DSA</span>
               </NavLink>
             </li>
@@ -172,23 +172,23 @@ export default function Sidebar() {
                 to="/challenges?category=Database"
                 className={`sidebar-link ${isCategoryActive('Database') ? 'active' : ''}`}
               >
-                <Database size={17} className="nav-icon" />
+                <Database size={15} className="nav-icon" />
                 <span>Database</span>
               </NavLink>
             </li>
           </ul>
         </div>
 
-        {/* ACCOUNT Section */}
+        {/* ── ACCOUNT Section ── */}
         <div className="nav-group">
-          <div className="nav-group-title">ACCOUNT</div>
+          <div className="nav-group-title">// ACCOUNT</div>
           <ul className="nav-list">
             <li>
               <NavLink
                 to="/attempts"
                 className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               >
-                <History size={17} className="nav-icon" />
+                <History size={15} className="nav-icon" />
                 <span>My Attempts</span>
               </NavLink>
             </li>
@@ -199,7 +199,7 @@ export default function Sidebar() {
                   `sidebar-link ${isActive && location.search.includes('achievements') ? 'active' : ''}`
                 }
               >
-                <Award size={17} className="nav-icon" />
+                <Award size={15} className="nav-icon" />
                 <span>Achievements</span>
               </NavLink>
             </li>
@@ -211,7 +211,7 @@ export default function Sidebar() {
                 }
                 end
               >
-                <User size={17} className="nav-icon" />
+                <User size={15} className="nav-icon" />
                 <span>Profile</span>
               </NavLink>
             </li>
@@ -222,7 +222,7 @@ export default function Sidebar() {
                   `sidebar-link ${isActive && location.search.includes('settings') ? 'active' : ''}`
                 }
               >
-                <Settings size={17} className="nav-icon" />
+                <Settings size={15} className="nav-icon" />
                 <span>Settings</span>
               </NavLink>
             </li>
@@ -230,19 +230,18 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Sidebar Footer Hint */}
+      {/* ── Sidebar Footer Tip ── */}
       <div className="sidebar-footer">
         <div className="debug-tip-card">
           <div className="tip-header">
-            <Flame size={14} className="tip-icon" />
-            <span>Daily Pro Tip</span>
+            <Flame size={12} className="tip-icon" />
+            // DAILY PRO TIP
           </div>
           <p className="tip-text">
-            Avoid mutating state in React hooks. Return new object and array references!
+            Avoid mutating state in React hooks. Always return new object and array references!
           </p>
         </div>
       </div>
     </aside>
   );
 }
-

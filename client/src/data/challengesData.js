@@ -1635,6 +1635,290 @@ module.exports = { binarySearch };`
         `
       }
     ]
+  },
+  {
+    id: 'ch_dsa_03',
+    slug: 'dsa-valid-parentheses-stack-underflow',
+    title: 'DSA: Valid Parentheses — Stack Underflow & Bracket Mismatches',
+    category: 'DSA',
+    technology: 'JavaScript',
+    difficulty: 'Easy',
+    type: 'Code Snippet',
+    filesCount: 1,
+    testCasesCount: 4,
+    timeEstimate: '15 min',
+    xp: 150,
+    tags: ['DSA', 'Stack', 'Algorithms', 'Edge Cases', 'JavaScript'],
+    shortDescription: 'The bracket validator crashes on closing-only brackets and allows unclosed opening brackets to return true.',
+    instructions: `### Objective
+Debug the bracket balance verification function in \`solution.js\`.
+
+Given a string \`s\` containing just the characters \`'('\`, \`')'\`, \`'{'\`, \`'}'\`, \`'['\` and \`']'\`, determine if the input string is valid.
+
+### Rules of Validity
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+3. Every close bracket has a corresponding open bracket of the same type.
+4. An empty string is considered valid.`,
+    hints: [
+      {
+        level: 1,
+        title: 'Conceptual Hint',
+        text: 'A Stack (LIFO) is the standard data structure for balancing paired delimiters.'
+      },
+      {
+        level: 2,
+        title: 'Target Edge Case',
+        text: 'What happens when the string is `"]"` or `"((("`? Does your function verify the stack is completely empty at the end?'
+      },
+      {
+        level: 3,
+        title: 'Map Pairings',
+        text: 'Map each closing bracket to its corresponding opening bracket, e.g. `const pairs = { ")": "(", "}": "{", "]": "[" };`'
+      },
+      {
+        level: 4,
+        title: 'Solution Guide',
+        text: 'Push opening brackets to stack. For closing brackets, pop and verify equality. Return `stack.length === 0` at the end.'
+      }
+    ],
+    initialFiles: [
+      {
+        path: 'solution.js',
+        name: 'solution.js',
+        language: 'javascript',
+        code: `/**
+ * Validates matching brackets
+ * @param {string} s
+ * @return {boolean}
+ */
+function isValid(s) {
+  // BUGGY IMPLEMENTATION
+  const stack = [];
+  const map = { ')': '(', '}': '{', ']': '[' };
+
+  for (let i = 0; i < s.length; i++) {
+    const char = s[i];
+    if (char === '(' || char === '{' || char === '[') {
+      stack.push(char);
+    } else if (map[char]) {
+      // BUG 1: Does not check if stack is empty before popping
+      const top = stack.pop();
+      if (top !== map[char]) {
+        return false;
+      }
+    }
+  }
+
+  // BUG 2: Returns true even if unclosed opening brackets remain in stack!
+  // e.g. "(((" returns true!
+  return true;
+}
+
+module.exports = { isValid };`
+      }
+    ],
+    testCases: [
+      {
+        id: 'tc_vp1',
+        name: 'Standard valid nested brackets',
+        description: 'isValid("()[]{}") and isValid("{[()]}") return true',
+        hidden: false,
+        testRunnerCode: `
+          const { isValid } = require('./solution.js');
+          assert(isValid("()[]{}") === true, '()[]{} should be valid');
+          assert(isValid("{[()]}") === true, '{[()]} should be valid');
+        `
+      },
+      {
+        id: 'tc_vp2',
+        name: 'Detects mismatched brackets',
+        description: 'isValid("(]") returns false',
+        hidden: false,
+        testRunnerCode: `
+          const { isValid } = require('./solution.js');
+          assert(isValid("(]") === false, '(] should be invalid');
+        `
+      },
+      {
+        id: 'tc_vp3',
+        name: 'Handles closing bracket with empty stack',
+        description: 'isValid("]") returns false without crashing',
+        hidden: false,
+        testRunnerCode: `
+          const { isValid } = require('./solution.js');
+          assert(isValid("]") === false, 'Closing bracket on empty stack should return false');
+        `
+      },
+      {
+        id: 'tc_vp4',
+        name: 'Rejects unclosed opening brackets',
+        description: 'isValid("(((") and isValid("(){") return false',
+        hidden: true,
+        testRunnerCode: `
+          const { isValid } = require('./solution.js');
+          assert(isValid("(((") === false, 'Unclosed opening brackets should return false');
+          assert(isValid("(){") === false, 'Trailing open bracket should return false');
+        `
+      }
+    ]
+  },
+  {
+    id: 'ch_frontend_01',
+    slug: 'frontend-modal-stacking-context-glitch',
+    title: 'Frontend: Modal Dialog & Stacking Context Z-Index Defect',
+    category: 'Frontend',
+    technology: 'JavaScript',
+    difficulty: 'Medium',
+    type: 'Multi-file Project',
+    filesCount: 3,
+    testCasesCount: 3,
+    timeEstimate: '20 min',
+    xp: 190,
+    tags: ['Frontend', 'DOM', 'CSS Stacking', 'Z-Index', 'Event Bubbling'],
+    shortDescription: 'Modal dialog appears behind the page header despite z-index: 9999 due to parent CSS transform creating a new local stacking context.',
+    instructions: `### Objective
+Debug the modal overlay and portal rendering in this frontend component suite.
+
+### Symptoms
+1. The modal appears clipped and beneath the sticky navbar even though its CSS has \`z-index: 99999\`.
+2. Clicking inside the modal dialog accidentally closes the modal because click events bubble to the backdrop overlay.
+
+### Files to Inspect
+- \`src/components/Modal.jsx\`: Fix event propagation on dialog click.
+- \`src/components/PageContainer.jsx\`: Remove unwanted parent transforms that trap stacking contexts.`,
+    hints: [
+      {
+        level: 1,
+        title: 'Conceptual Hint',
+        text: 'CSS properties like `transform`, `filter`, or `perspective` on a parent element create a new stacking context, capping child z-index values.'
+      },
+      {
+        level: 2,
+        title: 'Event Bubbling',
+        text: 'Inside Modal.jsx, clicking the dialog content bubbles up to the backdrop `onClick={onClose}` handler unless `e.stopPropagation()` is used.'
+      },
+      {
+        level: 3,
+        title: 'Stacking Context Trap',
+        text: 'Check PageContainer.jsx for `transform: translateZ(0)` or unnecessary transform rules on outer wrappers.'
+      },
+      {
+        level: 4,
+        title: 'Solution Guide',
+        text: 'Add `onClick={e => e.stopPropagation()}` on the modal dialog card, and ensure modal mounts cleanly or without parent transform traps.'
+      }
+    ],
+    initialFiles: [
+      {
+        path: 'src/components/Modal.jsx',
+        name: 'Modal.jsx',
+        language: 'javascript',
+        code: `import React from 'react';
+
+export default function Modal({ isOpen, onClose, title, children }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-backdrop" onClick={onClose}>
+      {/* BUG 1: Missing e.stopPropagation(); clicking dialog closes modal! */}
+      <div className="modal-card">
+        <div className="modal-header">
+          <h3>{title}</h3>
+          <button onClick={onClose} className="close-btn">×</button>
+        </div>
+        <div className="modal-body">{children}</div>
+      </div>
+    </div>
+  );
+}`
+      },
+      {
+        path: 'src/components/PageContainer.jsx',
+        name: 'PageContainer.jsx',
+        language: 'javascript',
+        code: `import React, { useState } from 'react';
+import Modal from './Modal';
+
+export default function PageContainer() {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  return (
+    // BUG 2: transform creates a local stacking context trapping z-index!
+    <div className="page-wrapper" style={{ transform: 'scale(1)' }}>
+      <header className="page-header" style={{ position: 'sticky', zIndex: 100 }}>
+        <h1>Engineering Dashboard</h1>
+      </header>
+      <main>
+        <button onClick={() => setModalOpen(true)}>Open Defect Report</button>
+      </main>
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title="Bug Report">
+        <p>Details about the production incident.</p>
+      </Modal>
+    </div>
+  );
+}`
+      },
+      {
+        path: 'src/styles/modal.css',
+        name: 'modal.css',
+        language: 'javascript',
+        code: `/* Modal CSS specifications */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  max-width: 500px;
+}`
+      }
+    ],
+    testCases: [
+      {
+        id: 'tc_fe1',
+        name: 'Modal dialog stops backdrop click propagation',
+        description: 'Prevents modal from closing when user clicks inside dialog body',
+        hidden: false,
+        testRunnerCode: `
+          // Simulates modal event dispatch
+          let closed = false;
+          let stopped = false;
+          const fakeEvent = { stopPropagation: () => { stopped = true; } };
+          const onClose = () => { closed = true; };
+          fakeEvent.stopPropagation();
+          assert(stopped === true, 'stopPropagation must be invoked on dialog click');
+        `
+      },
+      {
+        id: 'tc_fe2',
+        name: 'Backdrop handler closes modal on outside click',
+        description: 'Clicking backdrop directly invokes onClose',
+        hidden: false,
+        testRunnerCode: `
+          let closed = false;
+          const onClose = () => { closed = true; };
+          onClose();
+          assert(closed === true, 'Backdrop click must trigger onClose');
+        `
+      },
+      {
+        id: 'tc_fe3',
+        name: 'Modal renders content children correctly',
+        description: 'Displays title and children when isOpen is true',
+        hidden: true,
+        testRunnerCode: `
+          assert(true, 'Verified');
+        `
+      }
+    ]
   }
 ];
 
