@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # CodeDetective 🕵️‍♂️
 ### AI-Powered Interactive Developer Debugging & Learning Platform
 
@@ -245,3 +246,6 @@ Code execution safety is enforced by:
 ## 📜 License
 MIT License. Built for software engineers who value deep code comprehension and precision debugging.
 
+=======
+# codedetective
+>>>>>>> 20769b020669d6ad7538d99cec0a087f85eec91b
