@@ -390,7 +390,11 @@
   box-shadow: 8px 8px 0 var(--border-color);
   padding: 3.5rem 2rem;
   text-align: center;
-  color: white;
+  color: #FFFFFF;
+}
+
+.cta-banner * {
+  color: inherit;
 }
 
 .cta-content {

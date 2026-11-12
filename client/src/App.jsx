@@ -4,6 +4,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import MainLayout from './layouts/MainLayout';
 import DashboardLayout from './layouts/DashboardLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -27,7 +28,7 @@ export default function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            {/* Main Public SaaS Layout */}
+            {/* ── Public SaaS Layout (Navbar + Footer) ── */}
             <Route element={<MainLayout />}>
               <Route path="/" element={<LandingPage />} />
               <Route path="/leaderboard" element={<LeaderboardPage />} />
@@ -36,8 +37,14 @@ export default function App() {
               <Route path="/register" element={<RegisterPage />} />
             </Route>
 
-            {/* Authenticated Dashboard Layout (with Left Sidebar) */}
-            <Route element={<DashboardLayout />}>
+            {/* ── Protected Dashboard Layout (Navbar + Sidebar) ── */}
+            <Route
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/challenges" element={<ChallengesPage />} />
               <Route path="/debug-lab" element={<DebugLabPage />} />
@@ -45,12 +52,33 @@ export default function App() {
               <Route path="/profile" element={<ProfilePage />} />
             </Route>
 
-            {/* Standalone Fullscreen IDE Debugging Workspace */}
-            <Route path="/playground" element={<PlaygroundPage />} />
-            <Route path="/playground/:id" element={<PlaygroundPage />} />
-            <Route path="/challenges/:id" element={<PlaygroundPage />} />
+            {/* ── Protected Fullscreen IDE ── */}
+            <Route
+              path="/playground"
+              element={
+                <ProtectedRoute>
+                  <PlaygroundPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/playground/:id"
+              element={
+                <ProtectedRoute>
+                  <PlaygroundPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/challenges/:id"
+              element={
+                <ProtectedRoute>
+                  <PlaygroundPage />
+                </ProtectedRoute>
+              }
+            />
 
-            {/* Catch-all */}
+            {/* ── Catch-all ── */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
@@ -58,4 +86,3 @@ export default function App() {
     </ThemeProvider>
   );
 }
-

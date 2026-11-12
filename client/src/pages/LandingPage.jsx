@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Code2,
   Bug,
@@ -19,10 +19,33 @@ import {
   TrendingUp,
   Award
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 import '../styles/landing.css';
 
 export default function LandingPage() {
   const [activeCodeTab, setActiveCodeTab] = useState('buggy');
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // CTA: go to challenges if logged in, else go to login
+  const handleStartDebugging = (e) => {
+    e.preventDefault();
+    if (isAuthenticated) {
+      navigate('/challenges');
+    } else {
+      navigate('/login', { state: { from: { pathname: '/challenges' } } });
+    }
+  };
+
+  // Playground CTA: protected too
+  const handleLaunchPlayground = (e) => {
+    e.preventDefault();
+    if (isAuthenticated) {
+      navigate('/playground');
+    } else {
+      navigate('/login', { state: { from: { pathname: '/playground' } } });
+    }
+  };
 
   return (
     <div className="landing-page">
@@ -46,18 +69,18 @@ export default function LandingPage() {
           </p>
 
           <div className="hero-cta-group">
-            <Link to="/challenges" className="btn btn-primary btn-lg">
+            <button onClick={handleStartDebugging} className="btn btn-primary btn-lg">
               <span>Start Debugging</span>
               <ArrowRight size={18} />
-            </Link>
-            <Link to="/playground" className="btn btn-secondary btn-lg">
+            </button>
+            <button onClick={handleLaunchPlayground} className="btn btn-secondary btn-lg">
               <Terminal size={18} />
               <span>Launch Playground</span>
-            </Link>
+            </button>
           </div>
 
           {/* Interactive Code Diff Preview Showcase */}
-          <div className="hero-ide-preview card">
+          <div className="hero-ide-preview">
             <div className="ide-preview-header">
               <div className="window-dots">
                 <span className="dot dot-red"></span>
@@ -336,7 +359,7 @@ function verifyToken(req, res, next) {
       {/* Call to Action Banner */}
       <section className="cta-banner-section">
         <div className="container">
-          <div className="cta-banner card">
+          <div className="cta-banner">
             <div className="cta-content">
               <h2 className="cta-title">Ready to Test Your Debugging Acumen?</h2>
               <p className="cta-text">

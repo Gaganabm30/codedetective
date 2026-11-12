@@ -3,41 +3,24 @@ import axios from 'axios';
 
 const AuthContext = createContext();
 
-const INITIAL_USER = {
-  id: 'usr_dev01',
-  name: 'Alex Chen',
-  email: 'alex.chen@codedetective.dev',
-  role: 'Full Stack Engineer',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  xp: 1420,
-  level: 4,
-  streak: 7,
-  accuracy: 92,
-  solvedCount: 16,
-  rank: 12,
-  completedChallenges: ['ch_fullstack_01', 'ch_auth_01', 'ch_dsa_01'],
-  badges: [
-    { id: 'b1', name: 'Bug Hunter', icon: '🐛', description: 'Solved first 10 bugs' },
-    { id: 'b2', name: 'Async Ninja', icon: '⚡', description: 'Fixed 5 Promise & Async issues' },
-    { id: 'b3', name: '7-Day Streak', icon: '🔥', description: 'Debugged 7 days in a row' },
-    { id: 'b4', name: 'Stack Traced', icon: '🔍', description: 'Zero-hint resolution on Hard challenge' }
-  ]
-};
-
 export const AuthProvider = ({ children }) => {
+  // Start with null — user must explicitly log in
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('codedetective_user');
     if (saved) {
       try {
         return JSON.parse(saved);
       } catch (e) {
-        return INITIAL_USER;
+        return null;
       }
     }
-    return INITIAL_USER;
+    return null;
   });
 
-  const [token, setToken] = useState(() => localStorage.getItem('codedetective_token') || 'demo_token_xyz');
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem('codedetective_token') || null;
+  });
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -58,10 +41,31 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
+  const DEMO_USER = {
+    id: 'usr_dev01',
+    name: 'Alex Chen',
+    email: 'alex.chen@codedetective.dev',
+    role: 'Full Stack Engineer',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    xp: 1420,
+    level: 4,
+    streak: 7,
+    accuracy: 92,
+    solvedCount: 16,
+    rank: 12,
+    completedChallenges: ['ch_fullstack_01', 'ch_auth_01', 'ch_dsa_01'],
+    badges: [
+      { id: 'b1', name: 'Bug Hunter', icon: '🐛', description: 'Solved first 10 bugs' },
+      { id: 'b2', name: 'Async Ninja', icon: '⚡', description: 'Fixed 5 Promise & Async issues' },
+      { id: 'b3', name: '7-Day Streak', icon: '🔥', description: 'Debugged 7 days in a row' },
+      { id: 'b4', name: 'Stack Traced', icon: '🔍', description: 'Zero-hint resolution on Hard challenge' }
+    ]
+  };
+
   const login = async (email, password) => {
     setLoading(true);
     try {
-      // Attempt backend auth first
+      // Try real backend first
       try {
         const res = await axios.post('/api/auth/login', { email, password });
         if (res.data && res.data.user) {
@@ -71,15 +75,14 @@ export const AuthProvider = ({ children }) => {
           return { success: true };
         }
       } catch (apiErr) {
-        // Fallback for seamless demo experience if backend is in local fallback mode
         console.warn('API login fallback triggered:', apiErr.message);
       }
 
-      // Demo login
+      // Demo fallback — works without backend
       const demoUser = {
-        ...INITIAL_USER,
-        email: email || INITIAL_USER.email,
-        name: email ? email.split('@')[0] : INITIAL_USER.name,
+        ...DEMO_USER,
+        email: email || DEMO_USER.email,
+        name: email ? email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : DEMO_USER.name,
       };
       setUser(demoUser);
       setToken('demo_token_xyz');
@@ -107,7 +110,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       const newUser = {
-        ...INITIAL_USER,
+        ...DEMO_USER,
         id: `usr_${Date.now()}`,
         name: name || 'Code Detective',
         email: email || 'detective@codedetective.dev',
@@ -182,4 +185,3 @@ export const useAuth = () => {
   }
   return context;
 };
-

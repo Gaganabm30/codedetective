@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Code2, Mail, Lock, Eye, EyeOff, ArrowRight, Zap, CheckCircle2, Terminal } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import '../styles/auth.css';
@@ -13,6 +13,10 @@ export default function LoginPage() {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Redirect back to the page the user tried to visit, or /dashboard
+  const from = location.state?.from?.pathname || '/dashboard';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +36,7 @@ export default function LoginPage() {
     setSubmitting(false);
 
     if (res.success) {
-      navigate('/dashboard');
+      navigate(from, { replace: true });
     } else {
       setError(res.error || 'Invalid email or password.');
     }
@@ -44,7 +48,7 @@ export default function LoginPage() {
     setSubmitting(true);
     await login('alex.chen@codedetective.dev', 'secret123');
     setSubmitting(false);
-    navigate('/dashboard');
+    navigate(from, { replace: true });
   };
 
   return (
