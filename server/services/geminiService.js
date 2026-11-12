@@ -1,7 +1,8 @@
 /**
  * Gemini AI Debugging Mentor Service
  * Provides pedagogical Socratic debugging assistance using the Gemini API,
- * with graceful fallback to intelligent heuristic mentor guidance when API keys are unconfigured.
+ * with resilient fallback to intelligent heuristic mentor guidance when API keys are unconfigured
+ * or network requests timeout.
  */
 
 const SYSTEM_INSTRUCTION = `
@@ -16,12 +17,18 @@ CRITICAL PEDAGOGICAL RULES:
 5. Emphasize defensive coding, immutability, proper asynchronous patterns, and edge case coverage.
 `;
 
+const CANDIDATE_MODELS = [
+  'gemini-flash-latest',
+  'gemini-2.5-flash',
+  'gemini-2.5-flash-lite',
+  'gemini-pro-latest',
+];
+
 export async function askMentorAI({ challenge, message, code, context }) {
   const apiKey = process.env.GEMINI_API_KEY;
 
-  if (apiKey) {
-    try {
-      const prompt = `
+  if (apiKey && typeof apiKey === 'string' && apiKey.trim().length > 10) {
+    const prompt = `
 System Context:
 Challenge: "${challenge?.title || 'Coding Challenge'}"
 Description: ${challenge?.shortDescription || ''}
@@ -38,27 +45,38 @@ User question or prompt:
 Provide a concise, pedagogical response (max 3-4 paragraphs) following your mentoring guidelines.
 `;
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-            generationConfig: {
-              temperature: 0.4,
-              maxOutputTokens: 600,
-            },
-          }),
-        }
-      );
+    for (const model of CANDIDATE_MODELS) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
 
-      const data = await response.json();
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (reply) return reply;
-    } catch (err) {
-      console.warn('[Gemini API] Request error, falling back to heuristic mentor:', err.message);
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey.trim()}`,
+          {
+            method: 'POST',
+            signal: controller.signal,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+              generationConfig: {
+                temperature: 0.4,
+                maxOutputTokens: 600,
+              },
+            }),
+          }
+        );
+
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const data = await response.json();
+          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (reply) return reply;
+        }
+      } catch (err) {
+        // Continue to next model or fallback
+      }
     }
   }
 
@@ -85,9 +103,9 @@ export async function getProgressiveHint({ challenge, level, code }) {
 
 export async function explainErrorAI({ challenge, errorOutput, code }) {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (apiKey) {
-    try {
-      const prompt = `
+
+  if (apiKey && typeof apiKey === 'string' && apiKey.trim().length > 10) {
+    const prompt = `
 Explain this error concisely to a software engineer in training without spoiling the exact solution:
 Challenge: ${challenge?.title}
 Error output:
@@ -96,22 +114,35 @@ ${errorOutput}
 Code:
 ${code}
 `;
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-          }),
+
+    for (const model of CANDIDATE_MODELS) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey.trim()}`,
+          {
+            method: 'POST',
+            signal: controller.signal,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+            }),
+          }
+        );
+
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const data = await response.json();
+          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (reply) return reply;
         }
-      );
-      const data = await response.json();
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (reply) return reply;
-    } catch (err) {
-      console.warn('[Gemini API] Error explain error:', err.message);
+      } catch (err) {
+        // Fallback to next model or default
+      }
     }
   }
 
@@ -156,4 +187,3 @@ Scan the file for any place where an operation modifies an object in-place or ne
 
 Try making a focused change, then run the test suite to observe the diff!`;
 }
-

@@ -5,6 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import MainLayout from './layouts/MainLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
 
 // Pages
 import LandingPage from './pages/LandingPage';
@@ -31,10 +32,25 @@ export default function App() {
             {/* ── Public SaaS Layout (Navbar + Footer) ── */}
             <Route element={<MainLayout />}>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route path="/docs" element={<DocumentationPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
+
+              {/* Public-only Auth Routes (redirects to /dashboard if already logged in) */}
+              <Route
+                path="/login"
+                element={
+                  <PublicRoute>
+                    <LoginPage />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <PublicRoute>
+                    <RegisterPage />
+                  </PublicRoute>
+                }
+              />
             </Route>
 
             {/* ── Protected Dashboard Layout (Navbar + Sidebar) ── */}
@@ -49,10 +65,12 @@ export default function App() {
               <Route path="/challenges" element={<ChallengesPage />} />
               <Route path="/debug-lab" element={<DebugLabPage />} />
               <Route path="/attempts" element={<MyAttemptsPage />} />
+              <Route path="/my-attempts" element={<Navigate to="/attempts" replace />} />
+              <Route path="/leaderboard" element={<LeaderboardPage />} />
               <Route path="/profile" element={<ProfilePage />} />
             </Route>
 
-            {/* ── Protected Fullscreen IDE ── */}
+            {/* ── Protected Fullscreen IDE Workspaces ── */}
             <Route
               path="/playground"
               element={
@@ -78,7 +96,7 @@ export default function App() {
               }
             />
 
-            {/* ── Catch-all ── */}
+            {/* ── Catch-all Fallback ── */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>

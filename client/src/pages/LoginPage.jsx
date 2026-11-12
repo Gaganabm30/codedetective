@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Code2, Mail, Lock, Eye, EyeOff, ArrowRight, Zap, CheckCircle2, Terminal } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Terminal, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import '../styles/auth.css';
 
@@ -15,7 +15,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Redirect back to the page the user tried to visit, or /dashboard
+  // Redirect back to originally requested destination or default to /dashboard
   const from = location.state?.from?.pathname || '/dashboard';
 
   const handleSubmit = async (e) => {
@@ -26,13 +26,13 @@ export default function LoginPage() {
       setError('Please provide a valid developer email address.');
       return;
     }
-    if (!password || password.length < 6) {
-      setError('Password must contain at least 6 characters.');
+    if (!password) {
+      setError('Password is required.');
       return;
     }
 
     setSubmitting(true);
-    const res = await login(email, password);
+    const res = await login(email.trim(), password);
     setSubmitting(false);
 
     if (res.success) {
@@ -40,15 +40,6 @@ export default function LoginPage() {
     } else {
       setError(res.error || 'Invalid email or password.');
     }
-  };
-
-  const handleDemoLogin = async () => {
-    setEmail('alex.chen@codedetective.dev');
-    setPassword('secret123');
-    setSubmitting(true);
-    await login('alex.chen@codedetective.dev', 'secret123');
-    setSubmitting(false);
-    navigate(from, { replace: true });
   };
 
   return (
@@ -66,72 +57,61 @@ export default function LoginPage() {
 
             <div className="auth-form-header">
               <div className="auth-tech-tag">// AUTHENTICATION PIPELINE</div>
-              <h1 className="auth-heading">Sign In to CodeDetective</h1>
-              <p className="auth-subtext">Access your multi-file debugging workspace and challenge audit history.</p>
+              <h1 className="auth-heading">Welcome Back</h1>
+              <p className="auth-subtext">Continue your debugging journey and tackle real-world defects.</p>
             </div>
 
             {error && (
-              <div className="auth-error-banner">
+              <div className="auth-error-banner" role="alert">
+                <AlertCircle size={15} style={{ display: 'inline', marginRight: '6px' }} />
                 <span>{error}</span>
               </div>
             )}
 
-            {/* Quick Demo Pill */}
-            <div className="auth-demo-box">
-              <div className="flex-between">
-                <div className="flex-center flex-gap-sm">
-                  <Zap size={14} className="text-amber" />
-                  <span className="demo-text">Recruiter / Portfolio Demo:</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleDemoLogin}
-                  className="btn btn-sm btn-secondary demo-click-btn"
-                >
-                  One-Click Sign In
-                </button>
-              </div>
-            </div>
-
-            <form onSubmit={handleSubmit} className="auth-form-fields">
+            <form onSubmit={handleSubmit} className="auth-form-fields" noValidate>
               <div className="form-field-group">
-                <label className="field-label">DEVELOPER EMAIL</label>
+                <label className="field-label" htmlFor="login-email">
+                  DEVELOPER EMAIL
+                </label>
                 <div className="field-input-wrap">
                   <Mail size={16} className="field-icon" />
                   <input
+                    id="login-email"
                     type="email"
-                    placeholder="name@company.dev"
+                    placeholder="alex@company.dev"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    autoComplete="email"
+                    disabled={submitting}
                   />
                 </div>
               </div>
 
               <div className="form-field-group">
                 <div className="flex-between">
-                  <label className="field-label">PASSWORD</label>
-                  <a
-                    href="#forgot"
-                    onClick={(e) => { e.preventDefault(); alert('Reset link simulated for demo environment.'); }}
-                    className="forgot-password-link"
-                  >
-                    Forgot password?
-                  </a>
+                  <label className="field-label" htmlFor="login-password">
+                    PASSWORD
+                  </label>
                 </div>
                 <div className="field-input-wrap">
                   <Lock size={16} className="field-icon" />
                   <input
+                    id="login-password"
                     type={showPassword ? 'text' : 'password'}
-                    placeholder="••••••••"
+                    placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    autoComplete="current-password"
+                    disabled={submitting}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="toggle-pw-icon"
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    style={{ background: 'none', border: 'none' }}
                   >
                     {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                   </button>
@@ -150,8 +130,8 @@ export default function LoginPage() {
 
             <div className="auth-switch-footer">
               <span>New detective? </span>
-              <Link to="/register" className="auth-switch-link">
-                Create an account
+              <Link to="/register" state={{ from: location.state?.from }} className="auth-switch-link">
+                Sign Up for an account
               </Link>
             </div>
           </div>
@@ -173,7 +153,7 @@ export default function LoginPage() {
             <p className="right-hero-desc">
               Receive realistic codebases with intentional defects across Full Stack,
               React, Node.js, MongoDB, and DSA. Investigate stack traces, pass automated
-              assertions, and get progressive hints from your AI debugging mentor.
+              assertions, and get progressive hints from your AI mentor.
             </p>
 
             <div className="right-feature-checklist">
@@ -189,6 +169,16 @@ export default function LoginPage() {
                 <div className="sq-check">&#10003;</div>
                 <span>4-Tier Socratic AI Mentorship (Gemini API)</span>
               </div>
+            </div>
+
+            <div style={{ marginTop: '0.75rem' }}>
+              <Link
+                to="/register"
+                state={{ from: location.state?.from }}
+                className="auth-right-switch-btn"
+              >
+                Don't have an account? Sign Up →
+              </Link>
             </div>
 
             <div className="right-pane-footer flex-between">

@@ -385,20 +385,17 @@
    CTA BANNER SECTION
    ========================================================== */
 .cta-banner {
-  background-color: var(--primary);
+  background-color: #5420C9 !important;
   border: 2px solid var(--border-color);
+  border-radius: 0 !important;
   box-shadow: 8px 8px 0 var(--border-color);
   padding: 3.5rem 2rem;
   text-align: center;
   color: #FFFFFF;
 }
 
-.cta-banner * {
-  color: inherit;
-}
-
 .cta-content {
-  max-width: 700px;
+  max-width: 720px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -407,12 +404,15 @@
 }
 
 .cta-title {
+  color: #FFFFFF !important;
   font-size: 2.4rem;
   font-weight: 900;
   letter-spacing: -0.03em;
+  line-height: 1.2;
 }
 
 .cta-text {
+  color: #F0E9FF !important;
   font-size: 1.05rem;
   opacity: 0.95;
   line-height: 1.6;
@@ -421,29 +421,41 @@
 .cta-actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
   margin-top: 0.5rem;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .cta-banner .btn-primary {
-  background-color: #FFFFFF;
-  color: var(--primary);
-  border-color: var(--border-color);
+  background-color: #FFFFFF !important;
+  color: #5420C9 !important;
+  border: 2px solid #17131F !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 #17131F !important;
+  font-weight: 800 !important;
 }
+
 .cta-banner .btn-primary:hover {
-  background-color: var(--light-purple);
+  background-color: #F0E9FF !important;
+  color: #4517ac !important;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #17131F !important;
 }
 
 .cta-banner .btn-outline {
-  background-color: transparent;
-  color: #FFFFFF;
-  border: 2px solid #FFFFFF;
-  box-shadow: 4px 4px 0 #000000;
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 #000000 !important;
+  font-weight: 800 !important;
 }
+
 .cta-banner .btn-outline:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000 !important;
 }
 
 /* Responsive */

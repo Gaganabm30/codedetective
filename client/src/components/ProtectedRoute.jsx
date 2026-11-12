@@ -3,27 +3,62 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 /**
- * ProtectedRoute — Guards routes that require authentication.
- *
- * Usage 1 — wrap a layout element (DashboardLayout renders its own <Outlet>):
- *   <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
- *     <Route path="/dashboard" element={<DashboardPage />} />
- *   </Route>
- *
- * Usage 2 — wrap a standalone page:
- *   <Route path="/playground" element={<ProtectedRoute><PlaygroundPage /></ProtectedRoute>} />
- *
- * When the user is NOT authenticated, redirects to /login and stores
- * the attempted URL in location.state.from so LoginPage can redirect back.
+ * ProtectedRoute
+ * Guards routes that require active authentication.
+ * While session check is in-flight, renders a clean brutalist loading state
+ * to avoid flashing unauthorized or unauthenticated content.
  */
 export default function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          minHeight: '70vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '1.25rem',
+          fontFamily: 'var(--font-mono, monospace)',
+          color: 'var(--text-primary, #17131F)',
+        }}
+      >
+        <div
+          style={{
+            width: '42px',
+            height: '42px',
+            border: '3px solid #24202C',
+            backgroundColor: '#FFFFFF',
+            boxShadow: '4px 4px 0 #24202C',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 800,
+            color: '#5420C9',
+          }}
+        >
+          &lt;/&gt;
+        </div>
+        <div
+          style={{
+            fontSize: '0.82rem',
+            fontWeight: 800,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          // VERIFYING DEVELOPER SESSION...
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // If children is provided render it, otherwise render nested <Outlet>
   return children ?? <Outlet />;
 }

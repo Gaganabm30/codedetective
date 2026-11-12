@@ -1,17 +1,10 @@
 import React from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import {
-  Code2,
-  Terminal,
-  Trophy,
-  BookOpen,
-  Sun,
-  Moon,
   Zap,
   LogOut,
   Flame,
   LayoutDashboard,
-  Compass
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import '../styles/navbar.css';
@@ -19,6 +12,14 @@ import '../styles/navbar.css';
 export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/', { replace: true });
+  };
+
+  const userStreak = user ? (user.currentStreak !== undefined ? user.currentStreak : (user.streak || 1)) : 1;
+  const userXP = user ? (user.totalXP !== undefined ? user.totalXP : (user.xp || 0)) : 0;
 
   return (
     <header className="brutalist-navbar">
@@ -86,33 +87,42 @@ export default function Navbar() {
 
           {isAuthenticated && user ? (
             <div className="auth-user-bar">
-              <Link to="/dashboard" className="nav-dashboard-link" title="Dashboard">
-                <LayoutDashboard size={16} />
+              <Link to="/dashboard" className="nav-dashboard-link" title="Open Dashboard">
+                <LayoutDashboard size={15} />
                 <span>Dashboard</span>
               </Link>
 
-              <div className="nav-stat-pill" title="Daily Streak">
-                <Flame size={14} className="text-amber" />
-                <span>{user.streak}d</span>
+              <div className="nav-stat-pill" title="Current Debugging Streak">
+                <Flame size={13} className="text-amber" />
+                <span>{userStreak}d</span>
               </div>
 
-              <div className="nav-stat-pill xp" title="Total XP">
-                <Zap size={13} />
-                <span>{user.xp} XP</span>
+              <div className="nav-stat-pill xp" title="Total Detective XP">
+                <Zap size={12} />
+                <span>{userXP} XP</span>
               </div>
 
               <Link to="/profile" className="nav-avatar-box" title={user.name}>
-                <img src={user.avatar} alt={user.name} />
+                <img
+                  src={
+                    user.avatar ||
+                    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
+                  }
+                  alt={user.name}
+                />
               </Link>
 
-              <button onClick={logout} className="logout-square-btn" title="Sign Out">
-                <LogOut size={16} />
+              <button onClick={handleLogout} className="logout-square-btn" title="Sign Out">
+                <LogOut size={15} />
               </button>
             </div>
           ) : (
-            <div className="guest-nav-actions">
-              <Link to="/login" className="btn btn-primary btn-sign-in">
+            <div className="guest-nav-actions" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <Link to="/login" className="btn btn-secondary btn-sign-in" style={{ padding: '0.45rem 0.9rem', fontSize: '0.8rem' }}>
                 Sign In
+              </Link>
+              <Link to="/register" className="btn btn-primary btn-get-started" style={{ padding: '0.45rem 1rem', fontSize: '0.8rem' }}>
+                Get Started
               </Link>
             </div>
           )}

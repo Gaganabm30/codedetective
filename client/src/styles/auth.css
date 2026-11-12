@@ -173,15 +173,21 @@
 
 .auth-switch-footer {
   text-align: center;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+  font-size: 0.9rem;
+  color: #17131F;
   font-weight: 600;
+  padding-top: 0.5rem;
 }
 
 .auth-switch-link {
-  color: var(--primary);
+  color: #5420C9;
   font-weight: 800;
   text-decoration: underline;
+  margin-left: 4px;
+}
+
+.auth-switch-link:hover {
+  color: #702BEF;
 }
 
 /* ==========================================================
@@ -270,6 +276,105 @@
   font-family: var(--font-mono);
   font-size: 0.72rem;
   color: #8E88A8;
+}
+
+/* Password Strength & Requirements */
+.pw-strength-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+}
+
+.pw-strength-bars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.pw-strength-bar {
+  height: 4px;
+  background-color: var(--border-color);
+}
+
+.pw-strength-bar.active-weak {
+  background-color: var(--error);
+}
+
+.pw-strength-bar.active-medium {
+  background-color: var(--warning);
+}
+
+.pw-strength-bar.active-strong {
+  background-color: var(--success);
+}
+
+.pw-strength-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pw-requirements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+}
+
+.pw-req-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pw-req-item.met {
+  color: var(--success);
+}
+
+.auth-success-banner {
+  background-color: #DCFCE7;
+  border: 1.5px solid #16A34A;
+  color: #166534;
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* Right Pane High-Contrast Switch Button */
+.auth-right-switch-btn {
+  width: 100%;
+  background-color: #5420C9;
+  color: #FFFFFF !important;
+  border: 2px solid #000000;
+  box-shadow: 4px 4px 0 #000000;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 0.85rem 1.25rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.auth-right-switch-btn:hover {
+  background-color: #702BEF;
+  color: #FFFFFF !important;
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #000000;
 }
 
 /* Responsive */

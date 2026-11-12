@@ -6,7 +6,7 @@
   "scripts": {
     "client": "npm --prefix client run dev",
     "server": "npm --prefix server run dev",
-    "dev": "node -e \"console.log('Use npm run client or npm run server')\"",
+    "dev": "node dev.js",
     "build:client": "npm --prefix client run build"
   },
   "keywords": [

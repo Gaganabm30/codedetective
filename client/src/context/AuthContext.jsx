@@ -1,161 +1,141 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { authService } from '../services/api';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Start with null — user must explicitly log in
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('codedetective_user');
-    if (saved) {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Validate existing session on application startup
+  useEffect(() => {
+    let isMounted = true;
+
+    async function checkCurrentSession() {
       try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return null;
+        const res = await authService.getMe();
+        if (isMounted && res.data && res.data.user) {
+          setUser(res.data.user);
+        }
+      } catch (err) {
+        // Unauthenticated visitor or expired session
+        if (isMounted) {
+          setUser(null);
+          localStorage.removeItem('codedetective_token');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
-    return null;
-  });
 
-  const [token, setToken] = useState(() => {
-    return localStorage.getItem('codedetective_token') || null;
-  });
+    checkCurrentSession();
 
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('codedetective_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('codedetective_user');
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem('codedetective_token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-      localStorage.removeItem('codedetective_token');
-      delete axios.defaults.headers.common['Authorization'];
-    }
-  }, [token]);
-
-  const DEMO_USER = {
-    id: 'usr_dev01',
-    name: 'Alex Chen',
-    email: 'alex.chen@codedetective.dev',
-    role: 'Full Stack Engineer',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-    xp: 1420,
-    level: 4,
-    streak: 7,
-    accuracy: 92,
-    solvedCount: 16,
-    rank: 12,
-    completedChallenges: ['ch_fullstack_01', 'ch_auth_01', 'ch_dsa_01'],
-    badges: [
-      { id: 'b1', name: 'Bug Hunter', icon: '🐛', description: 'Solved first 10 bugs' },
-      { id: 'b2', name: 'Async Ninja', icon: '⚡', description: 'Fixed 5 Promise & Async issues' },
-      { id: 'b3', name: '7-Day Streak', icon: '🔥', description: 'Debugged 7 days in a row' },
-      { id: 'b4', name: 'Stack Traced', icon: '🔍', description: 'Zero-hint resolution on Hard challenge' }
-    ]
-  };
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const login = async (email, password) => {
-    setLoading(true);
     try {
-      // Try real backend first
-      try {
-        const res = await axios.post('/api/auth/login', { email, password });
-        if (res.data && res.data.user) {
-          setUser(res.data.user);
-          setToken(res.data.token || 'auth_token');
-          setLoading(false);
-          return { success: true };
+      const res = await authService.login({ email, password });
+      if (res.data && res.data.user) {
+        setUser(res.data.user);
+        if (res.data.token) {
+          localStorage.setItem('codedetective_token', res.data.token);
         }
-      } catch (apiErr) {
-        console.warn('API login fallback triggered:', apiErr.message);
+        return { success: true, user: res.data.user };
       }
-
-      // Demo fallback — works without backend
-      const demoUser = {
-        ...DEMO_USER,
-        email: email || DEMO_USER.email,
-        name: email ? email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : DEMO_USER.name,
-      };
-      setUser(demoUser);
-      setToken('demo_token_xyz');
-      setLoading(false);
-      return { success: true };
+      return { success: false, error: 'Malformed login response' };
     } catch (err) {
-      setLoading(false);
-      return { success: false, error: err.message || 'Login failed' };
+      let errorMessage = 'Invalid email or password.';
+      if (!err.response || err.code === 'ERR_NETWORK') {
+        errorMessage =
+          'Cannot connect to the CodeDetective backend server. Please ensure the backend is running on port 5000 (cd server && npm run dev).';
+      } else if (err.response) {
+        const data = err.response.data;
+        if (data && typeof data === 'object') {
+          errorMessage = data.error || data.message || 'Authentication failed.';
+        } else if (typeof data === 'string') {
+          if (data.includes('ECONNREFUSED') || data.includes('proxy error') || data.startsWith('<!DOCTYPE')) {
+            errorMessage =
+              'Backend server is not running on port 5000. Please start it with: cd server && npm run dev';
+          } else {
+            errorMessage = data;
+          }
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      return { success: false, error: errorMessage };
     }
   };
 
   const register = async (name, email, password) => {
-    setLoading(true);
     try {
-      try {
-        const res = await axios.post('/api/auth/register', { name, email, password });
-        if (res.data && res.data.user) {
-          setUser(res.data.user);
-          setToken(res.data.token || 'auth_token');
-          setLoading(false);
-          return { success: true };
+      const res = await authService.register({ name, email, password });
+      if (res.data && res.data.user) {
+        setUser(res.data.user);
+        if (res.data.token) {
+          localStorage.setItem('codedetective_token', res.data.token);
         }
-      } catch (apiErr) {
-        console.warn('API register fallback triggered:', apiErr.message);
+        return { success: true, user: res.data.user };
       }
-
-      const newUser = {
-        ...DEMO_USER,
-        id: `usr_${Date.now()}`,
-        name: name || 'Code Detective',
-        email: email || 'detective@codedetective.dev',
-        xp: 100,
-        level: 1,
-        streak: 1,
-        accuracy: 100,
-        solvedCount: 0,
-        completedChallenges: [],
-        badges: [{ id: 'b1', name: 'Fresh Detective', icon: '🕵️', description: 'Joined CodeDetective' }]
-      };
-      setUser(newUser);
-      setToken('demo_token_new');
-      setLoading(false);
-      return { success: true };
+      return { success: false, error: 'Malformed registration response' };
     } catch (err) {
-      setLoading(false);
-      return { success: false, error: err.message || 'Registration failed' };
+      let errorMessage = 'Registration failed. Please try again.';
+      if (!err.response || err.code === 'ERR_NETWORK') {
+        errorMessage =
+          'Cannot connect to the CodeDetective backend server. Please ensure the backend is running on port 5000 (cd server && npm run dev).';
+      } else if (err.response) {
+        const data = err.response.data;
+        if (data && typeof data === 'object') {
+          errorMessage = data.error || data.message || 'Registration failed.';
+        } else if (typeof data === 'string') {
+          if (data.includes('ECONNREFUSED') || data.includes('proxy error') || data.startsWith('<!DOCTYPE')) {
+            errorMessage =
+              'Backend server is not running on port 5000. Please start it with: cd server && npm run dev';
+          } else {
+            errorMessage = data;
+          }
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      return { success: false, error: errorMessage };
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('codedetective_user');
-    localStorage.removeItem('codedetective_token');
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } catch (err) {
+      console.warn('Logout API cleanup notice:', err.message);
+    } finally {
+      setUser(null);
+      localStorage.removeItem('codedetective_token');
+    }
   };
 
   const addSolvedChallenge = (challengeId, xp = 150) => {
     if (!user) return;
-    setUser(prev => {
-      const alreadySolved = prev.completedChallenges?.includes(challengeId);
-      const newCompleted = alreadySolved
-        ? prev.completedChallenges
-        : [...(prev.completedChallenges || []), challengeId];
-      const newXp = (prev.xp || 0) + (alreadySolved ? 25 : xp);
-      const newCount = alreadySolved ? prev.solvedCount : (prev.solvedCount || 0) + 1;
-      const newLevel = Math.floor(newXp / 400) + 1;
+    setUser((prev) => {
+      if (!prev) return prev;
+      const solvedList = prev.solvedChallenges || prev.completedChallenges || [];
+      const alreadySolved = solvedList.includes(challengeId);
+      const updatedList = alreadySolved ? solvedList : [...solvedList, challengeId];
+      const newXp = (prev.totalXP || prev.xp || 0) + (alreadySolved ? 25 : xp);
+      const newLevel = Math.max(1, Math.floor(newXp / 400) + 1);
 
       return {
         ...prev,
+        totalXP: newXp,
         xp: newXp,
         level: newLevel,
-        solvedCount: newCount,
-        completedChallenges: newCompleted,
+        solvedChallenges: updatedList,
+        completedChallenges: updatedList,
+        solvedCount: updatedList.length,
       };
     });
   };
@@ -164,13 +144,12 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        token,
         loading,
+        isAuthenticated: !!user,
         login,
         register,
         logout,
         addSolvedChallenge,
-        isAuthenticated: !!user,
       }}
     >
       {children}

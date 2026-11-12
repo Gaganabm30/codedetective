@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Code2,
   Bug,
   Terminal,
-  ShieldCheck,
   Sparkles,
   ArrowRight,
   CheckCircle2,
@@ -13,11 +11,6 @@ import {
   Database,
   Binary,
   Atom,
-  Play,
-  RotateCcw,
-  Zap,
-  TrendingUp,
-  Award
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import '../styles/landing.css';
@@ -27,23 +20,33 @@ export default function LandingPage() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // CTA: go to challenges if logged in, else go to login
+  // Primary CTA: If logged in -> /dashboard, if guest -> /login
   const handleStartDebugging = (e) => {
     e.preventDefault();
     if (isAuthenticated) {
-      navigate('/challenges');
+      navigate('/dashboard');
     } else {
-      navigate('/login', { state: { from: { pathname: '/challenges' } } });
+      navigate('/login', { state: { from: { pathname: '/dashboard' } } });
     }
   };
 
-  // Playground CTA: protected too
+  // Playground CTA: If logged in -> /playground, if not -> /login
   const handleLaunchPlayground = (e) => {
     e.preventDefault();
     if (isAuthenticated) {
       navigate('/playground');
     } else {
       navigate('/login', { state: { from: { pathname: '/playground' } } });
+    }
+  };
+
+  // Category navigation with auth check
+  const handleCategoryClick = (categoryPath) => (e) => {
+    e.preventDefault();
+    if (isAuthenticated) {
+      navigate(categoryPath);
+    } else {
+      navigate('/login', { state: { from: { pathname: categoryPath } } });
     }
   };
 
@@ -161,9 +164,12 @@ function verifyToken(req, res, next) {
                   </span>
                 )}
               </div>
-              <Link to="/challenges/ch_auth_01" className="btn btn-sm btn-outline">
+              <button
+                onClick={handleCategoryClick('/challenges/ch_auth_01')}
+                className="btn btn-sm btn-outline"
+              >
                 Inspect Full Challenge →
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -179,7 +185,7 @@ function verifyToken(req, res, next) {
             </div>
             <div className="stat-card">
               <span className="stat-number">8 Categories</span>
-              <span className="stat-label">Full Stack to DSA & Mongo</span>
+              <span className="stat-label">Full Stack to DSA &amp; Mongo</span>
             </div>
             <div className="stat-card">
               <span className="stat-number">98.4%</span>
@@ -221,7 +227,7 @@ function verifyToken(req, res, next) {
               <div className="step-icon-wrap">
                 <Bug className="step-icon" size={24} />
               </div>
-              <h3 className="step-title">Triage & Locate Defect</h3>
+              <h3 className="step-title">Triage &amp; Locate Defect</h3>
               <p className="step-text">
                 Inspect stack traces, terminal output, and failing test assertions. Read through
                 multi-file relationships without solutions being handed to you.
@@ -245,7 +251,7 @@ function verifyToken(req, res, next) {
               <div className="step-icon-wrap">
                 <CheckCircle2 className="step-icon" size={24} />
               </div>
-              <h3 className="step-title">Verify & Pass Test Suite</h3>
+              <h3 className="step-title">Verify &amp; Pass Test Suite</h3>
               <p className="step-text">
                 Run automated assertion suites in an isolated sandbox. Earn XP, increase your
                 accuracy score, and climb the global developer leaderboard.
@@ -263,13 +269,20 @@ function verifyToken(req, res, next) {
               <h2 className="section-title">Explore Core Debugging Tracks</h2>
               <p className="section-desc">From frontend state glitches to complex full-stack microservices.</p>
             </div>
-            <Link to="/challenges" className="btn btn-outline">
+            <button
+              onClick={handleCategoryClick('/challenges')}
+              className="btn btn-outline"
+            >
               View All 120+ Challenges →
-            </Link>
+            </button>
           </div>
 
           <div className="categories-grid">
-            <Link to="/challenges?category=Full Stack" className="category-card card">
+            <div
+              onClick={handleCategoryClick('/challenges?category=Full Stack')}
+              className="category-card card"
+              style={{ cursor: 'pointer' }}
+            >
               <div className="cat-icon-wrap bg-purple">
                 <Layers size={22} />
               </div>
@@ -281,13 +294,17 @@ function verifyToken(req, res, next) {
                 <span className="badge badge-purple">Multi-file</span>
                 <span className="cat-count">24 Challenges</span>
               </div>
-            </Link>
+            </div>
 
-            <Link to="/challenges?category=React" className="category-card card">
+            <div
+              onClick={handleCategoryClick('/challenges?category=React')}
+              className="category-card card"
+              style={{ cursor: 'pointer' }}
+            >
               <div className="cat-icon-wrap bg-blue">
                 <Atom size={22} />
               </div>
-              <h3 className="cat-title">React & UI State</h3>
+              <h3 className="cat-title">React &amp; UI State</h3>
               <p className="cat-desc">
                 Master state immutability, infinite re-render loops, stale closures in useEffect, and key reconciliation.
               </p>
@@ -295,13 +312,17 @@ function verifyToken(req, res, next) {
                 <span className="badge badge-purple">Components</span>
                 <span className="cat-count">18 Challenges</span>
               </div>
-            </Link>
+            </div>
 
-            <Link to="/challenges?category=Node.js" className="category-card card">
+            <div
+              onClick={handleCategoryClick('/challenges?category=Node.js')}
+              className="category-card card"
+              style={{ cursor: 'pointer' }}
+            >
               <div className="cat-icon-wrap bg-green">
                 <Cpu size={22} />
               </div>
-              <h3 className="cat-title">Node.js & Express</h3>
+              <h3 className="cat-title">Node.js &amp; Express</h3>
               <p className="cat-desc">
                 Fix unhandled promise rejections, middleware next() pipelines, stream backpressure, and async error handlers.
               </p>
@@ -309,13 +330,17 @@ function verifyToken(req, res, next) {
                 <span className="badge badge-purple">APIs</span>
                 <span className="cat-count">20 Challenges</span>
               </div>
-            </Link>
+            </div>
 
-            <Link to="/challenges?category=Database" className="category-card card">
+            <div
+              onClick={handleCategoryClick('/challenges?category=Database')}
+              className="category-card card"
+              style={{ cursor: 'pointer' }}
+            >
               <div className="cat-icon-wrap bg-amber">
                 <Database size={22} />
               </div>
-              <h3 className="cat-title">MongoDB & Mongoose</h3>
+              <h3 className="cat-title">MongoDB &amp; Mongoose</h3>
               <p className="cat-desc">
                 Resolve uncast ObjectId in $match, nested aggregation pipeline grouping, index bottlenecks, and schema hooks.
               </p>
@@ -323,13 +348,17 @@ function verifyToken(req, res, next) {
                 <span className="badge badge-purple">Aggregation</span>
                 <span className="cat-count">16 Challenges</span>
               </div>
-            </Link>
+            </div>
 
-            <Link to="/challenges?category=DSA" className="category-card card">
+            <div
+              onClick={handleCategoryClick('/challenges?category=DSA')}
+              className="category-card card"
+              style={{ cursor: 'pointer' }}
+            >
               <div className="cat-icon-wrap bg-indigo">
                 <Binary size={22} />
               </div>
-              <h3 className="cat-title">DSA & Algorithms</h3>
+              <h3 className="cat-title">DSA &amp; Algorithms</h3>
               <p className="cat-desc">
                 Diagnose edge-case flaws, hash collision oversights, off-by-one pointer errors, and exponential complexity bugs.
               </p>
@@ -337,9 +366,13 @@ function verifyToken(req, res, next) {
                 <span className="badge badge-purple">Algorithms</span>
                 <span className="cat-count">22 Challenges</span>
               </div>
-            </Link>
+            </div>
 
-            <Link to="/debug-lab" className="category-card card special-card">
+            <div
+              onClick={handleCategoryClick('/debug-lab')}
+              className="category-card card special-card"
+              style={{ cursor: 'pointer' }}
+            >
               <div className="cat-icon-wrap bg-primary">
                 <Terminal size={22} />
               </div>
@@ -351,7 +384,7 @@ function verifyToken(req, res, next) {
                 <span className="badge badge-purple">Interactive</span>
                 <span className="cat-count">Play Now →</span>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -367,12 +400,12 @@ function verifyToken(req, res, next) {
                 troubleshooting speed, and production debugging skills.
               </p>
               <div className="cta-actions">
-                <Link to="/register" className="btn btn-primary btn-lg">
-                  Create Free Account
-                </Link>
-                <Link to="/playground" className="btn btn-outline btn-lg">
+                <button onClick={handleStartDebugging} className="btn btn-primary btn-lg">
+                  {isAuthenticated ? 'Open Dashboard' : 'Create Free Account'}
+                </button>
+                <button onClick={handleLaunchPlayground} className="btn btn-outline btn-lg">
                   Open IDE Workspace
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -381,4 +414,3 @@ function verifyToken(req, res, next) {
     </div>
   );
 }
-

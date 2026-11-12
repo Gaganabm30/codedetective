@@ -2,13 +2,14 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: '/api',
+  withCredentials: true, // Send HttpOnly session cookie on every request
   headers: {
     'Content-Type': 'application/json',
   },
   timeout: 15000,
 });
 
-// Request interceptor to attach JWT token
+// Request interceptor to attach JWT token if stored in memory/storage
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('codedetective_token');
@@ -24,10 +25,16 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error.response?.data || error.message);
     return Promise.reject(error);
   }
 );
+
+export const authService = {
+  register: (data) => api.post('/auth/register', data),
+  login: (data) => api.post('/auth/login', data),
+  getMe: () => api.get('/auth/me'),
+  logout: () => api.post('/auth/logout'),
+};
 
 export const challengeService = {
   getChallenges: (params) => api.get('/challenges', { params }),
@@ -59,4 +66,3 @@ export const attemptsService = {
 };
 
 export default api;
-
